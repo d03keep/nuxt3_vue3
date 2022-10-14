@@ -1,6 +1,6 @@
 <template>
   <div>
-   充值记录
+   {{user.nickname}}的充值记录
     <NuxtLink :to="`/recharge-record-detail-${item}`" v-for="item of rechargeList" :key="item">
       <p>
         item id {{item}}
@@ -17,7 +17,8 @@
 
 <script setup lang="ts">
   import { ElRow, ElCol } from 'element-plus'
-
+  import { useUserStore } from "~/store/useUserStore";
+  const user = useUserStore()
   const rechargeList = ref<string[]>([
       'as123819sdsd2d3', 'as9123kjasld912'
   ])

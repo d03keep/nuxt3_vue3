@@ -16,7 +16,6 @@
 
 <script setup lang="ts">
 import { ElButton } from 'element-plus'
-import 'element-plus/theme-chalk/src/button.scss'
 useHead({
   title: "前端博客-前端教程-记录web前端开发的个人技术博客",
   viewport: "width=device-width,initial-scale=1,maximum-scale=1 ",

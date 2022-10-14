@@ -1,17 +1,8 @@
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from "unplugin-vue-components/vite";
 const lifecycle = process.env.npm_lifecycle_event;
 
-const autoImportOpts = {
-    imports: ['pinia', {}],
-    resolvers: [ElementPlusResolver({ ssr: true })],
-    dts: './auto-imports.d.ts',
-}
-
-const vueComponentsOpts = {
-    resolvers: [ElementPlusResolver({ ssr: true })],
-    dts: './vue-components.d.ts',
-}
-// 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
 const { ENV } = process.env
 
 const now = new Date();
@@ -22,10 +13,8 @@ console.log('VERSION=', VERSION)
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-    modules: [
-        ['unplugin-auto-import/nuxt', autoImportOpts],
-        ['unplugin-vue-components/nuxt', vueComponentsOpts],
-        ["@pinia/nuxt"],
+    buildModules: [
+        "@pinia/nuxt",
     ],
     head: {
         "htmlAttrs": {lang: 'zh-CN'},
@@ -46,9 +35,24 @@ export default defineNuxtConfig({
     },
     css: [
         '@/assets/css/base.less',
-        'element-plus/theme-chalk/base.css'
+        // 'element-plus/theme-chalk/base.css',
+        'element-plus/dist/index.css'
     ],
-
+    vite: {
+        define: {
+            __ENV__: `'${ENV}'`,
+            __VERSION__: `'${VERSION}'`
+        },
+        plugins: [
+            AutoImport({
+                resolvers: [ElementPlusResolver({ ssr: true })]
+            }),
+            Components({
+                dts: true,
+                resolvers: [ElementPlusResolver({ ssr: true })]
+            }),
+        ],
+    },
     build: {
         transpile: [
             ...(lifecycle === 'build' || lifecycle === 'generate' ? ['element-plus'] : []), // 'element-plus/es',
@@ -71,12 +75,6 @@ export default defineNuxtConfig({
             ]
         },
     },
-    vite: {
-        define: {
-            __ENV__: `'${ENV}'`,
-            __VERSION__: `'${VERSION}'`
-        },
-    },
     components: {
         "dirs": [
             {
@@ -93,19 +91,6 @@ export default defineNuxtConfig({
         ".ts",
         ".vue"
     ],
-    dir: {
-        assets: 'assets',
-        app: 'app',
-        layouts: 'layouts',
-        middleware: 'middleware',
-        pages: 'pages',
-        public: 'public',
-        static: 'public',
-        /**
-         * Vuex store
-         */
-        store: 'store',
-    },
     typescript: {
         shim: true,
         strict: false,

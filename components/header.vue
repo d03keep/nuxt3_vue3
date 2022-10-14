@@ -1,14 +1,20 @@
 <template>
   <header class="the-header">
     头部
-    昵称：{{user.nick_name}}
+    昵称：{{user.nickname}}
+
+    <el-button type="primary" @click="handelChangeNickname">改名</el-button>
   </header>
 </template>
 
-<script setup>
-import {useUserStore} from "../store/useUserStore";
+<script setup lang="ts">
+import { useUserStore } from "~/store/useUserStore";
 
 const user = useUserStore()
+
+const handelChangeNickname = () => {
+  user.nickname = 'keep1003'
+}
 </script>
 
 <style scoped>
