@@ -1,0 +1,333 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  z-index: 1;
+  //font-weight: 300;
+  -webkit-tap-highlight-color:rgba(255,255,255,0);
+  -webkit-backface-visibility: hidden;
+}
+
+html,body {
+  width: 100%;
+  height: 100%;
+  -webkit-touch-callout:none;
+  -webkit-text-size-adjust: 100%;
+  -webkit-user-select:none;
+}
+
+body {
+  font-family: 'PingFangSC-Medium', 'Microsoft YaHei', 'Arial', 'Helvetica', 'sans-serif' !important;
+  font-size: .26rem;
+}
+
+input,
+textarea,
+button {
+  outline: none;
+  border: 0;
+  vertical-align: middle;
+  background: none;
+  &::placeholder {
+    color: #999;
+  }
+}
+input::-webkit-input-placeholder {
+  color: #d9d9d8;
+  font-size: 12px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+img {
+  user-select: none;
+}
+ul,
+ol,
+li {
+  list-style: none;
+}
+
+.container {
+  &:before {
+    content: '';
+    display: table;
+    clear: both;
+  }
+
+  &:after {
+    content: '';
+    display: table;
+  }
+}
+
+a {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.scroll-y {
+  overflow-y: scroll;
+}
+
+.scroll-x {
+  overflow-x: scroll;
+}
+
+.flex {
+  display: flex;
+}
+
+.left {
+  text-align: left;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+.br-50 {
+  border-radius: 50%;
+}
+
+.ma {
+  margin: 0 auto;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.over-hidden {
+  overflow: hidden !important;
+}
+
+.re {
+  position: relative !important;
+}
+
+.ab {
+  position: absolute !important;
+}
+
+.w100 {
+  width: 100%;
+}
+
+.h100 {
+  height: 100%!important;
+}
+
+.block {
+  display: block!important;
+}
+
+.ib {
+  display: inline-block;
+}
+
+.bold {
+  font-weight: 700 !important;
+}
+
+//垂直水平居中
+.flex-middle {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.align-start {
+  align-items:flex-start !important;
+}
+
+.align-center{
+	align-items: center;
+}
+
+.align-start{
+	align-items: flex-start;
+}
+
+.justify-center{
+	justify-content: center;
+}
+
+.justify-between{
+  justify-content: space-between;
+}
+
+.justify-end{
+  justify-content: flex-end;
+}
+
+// 水平分布
+.flex-middle-only {
+  display: flex!important;
+  align-items: center!important;
+}
+
+// 两端对齐
+.flex-between {
+  display: flex!important;
+  justify-content: space-between!important;
+}
+
+.flex-around {
+  display: flex!important;
+  justify-content: space-around!important;
+}
+
+.flex-end {
+  display: flex!important;
+  justify-content: flex-end!important;
+}
+
+.flex-start {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.flex-1 {
+  flex: 1 !important;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+// 绝对定位 相对父元素垂直居中
+.ab-middle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// 绝对定位 相对父元素水平居中
+.ab-middle-x {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+// 绝对定位 相对父元素垂直居中
+.ab-middle-y {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.hide-scroll-bar {
+  &::-webkit-scrollbar {
+    width: 2px;
+  }
+}
+
+// 单行文本溢出隐藏
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.fs-10 {
+  font-size: 0.4rem;
+  transform: scale(0.5);
+}
+
+.font(@i) when(@i <= 24) {
+  .fs@{i} {
+    font-size: @i * 0.02rem!important;
+  }
+  .font((@i + 1));
+}
+.font(8);
+
+@sizes: 4, 5, 6, 8, 10, 12, 14, 15, 16, 18, 20, 22, 24, 25, 26, 28, 30, 35;
+
+.Loop(@index) when(@index <= length(@sizes)) {
+  // 执行内容
+  // 类名参数要加大括号@{index}
+  // 根据index获取对应的某个值 extract(数组名, 对应的序号)
+  @size: extract(@sizes, @index);
+
+  .m-t@{size}{
+    margin-top: @size * 0.02rem!important;
+  }
+
+  .m-r@{size}{
+    margin-right: @size * 0.02rem!important;
+  }
+
+  .m-b@{size}{
+    margin-bottom: @size * 0.02rem!important;
+  }
+
+  .m-l@{size}{
+    margin-left: @size * 0.02rem!important;
+  }
+
+  .p-t@{size}{
+    padding-top: @size * 0.02rem!important;
+  }
+
+  .p-r@{size}{
+    padding-right: @size * 0.02rem!important;
+  }
+
+  .p-b@{size}{
+    padding-bottom: @size * 0.02rem!important;
+  }
+
+  .p-l@{size}{
+    padding-left: @size * 0.02rem!important;
+  }
+
+  //递归调用 达到循环目的
+  .Loop(@index+1);
+}
+
+// 调用循环 less循环是从1开始
+.Loop(1);
+
+@height: 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 24, 25, 26, 28, 30, 35;
+
+.LoopLh(@index) when(@index <= length(@height)) {
+  @size: extract(@height, @index);
+  .lh-@{size} {
+    line-height: @size * 0.02rem!important;
+  }
+  .LoopLh(@index + 1);
+}
+
+.LoopLh(1);
+
+@weights: 4, 5, 6, 7, 8, 9;
+
+.fontWeight(@index) when(@index <= length(@weights)) {
+  @weight: extract(@weights, @index);
+  .fw-@{weight} {
+    font-weight: @weight * 100 !important;
+  }
+  .fontWeight(@index + 1);
+}
+
+.fontWeight(1);

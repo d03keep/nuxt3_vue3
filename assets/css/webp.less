@@ -1,0 +1,9 @@
+.bg-image(@url) {
+  background-image: url("@{url}?v=@{version}");
+
+  :root.webp & {
+    @_url: replace('@{url}', '\.(png|jpg|jpeg)$', '.webp');
+
+    background-image: url("@{_url}?v=@{version}");
+  }
+}
