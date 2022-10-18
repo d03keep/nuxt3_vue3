@@ -8,6 +8,7 @@
 </template>
 
 <script setup lang="ts">
+import { ElButton } from 'element-plus'
 import { useUserStore } from "~/store/useUserStore";
 
 const user = useUserStore()

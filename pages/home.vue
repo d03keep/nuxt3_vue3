@@ -14,7 +14,7 @@
 <script setup lang="ts">
   const router = useRouter()
   const user = ref<{nickname: string}>({nickname: 'keep'})
-  const title = ref("码云笔记的前端博客");
+  const title = ref<string>("码云笔记的前端博客");
   function handleClick(e) {
     console.log('handleClick', e.target)
     router.push('/')

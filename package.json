@@ -5,7 +5,8 @@
     "dev": "cross-env ENV=dev nuxt dev --port 9006",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "serve": "pm2 start pm2.json"
   },
   "devDependencies": {
     "babel-plugin-import": "^1.13.5",

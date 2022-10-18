@@ -26,6 +26,15 @@ export default defineNuxtConfig({
     buildModules: [
 
     ],
+    hooks: {
+        // 去掉多余的window.__NUXT__内容
+        'vue-renderer:ssr:context'(context) {
+            if (context?.nuxt?.error?.statusCode === 200) {
+                const routePath = JSON.stringify(context.nuxt.routePath);
+                context.nuxt = { serverRendered: true, routePath };
+            }
+        }
+    },
     head: {
         "htmlAttrs": {lang: 'zh-CN'},
         "meta": [
@@ -66,6 +75,7 @@ export default defineNuxtConfig({
         ],
     },
     build: {
+        extractCSS: true,
         transpile: [
             ...(lifecycle === 'build' || lifecycle === 'generate' ? ['element-plus'] : []), // 'element-plus/es',
         ],

@@ -21,6 +21,7 @@ export function initialHtmlStyle () {
       const fontSize = Number.parseFloat(document.documentElement.style.fontSize)
       return Number.parseFloat(f) / fontSize
     }
+
     // 禁止缩放
     document.addEventListener('gesturestart', (event) => { event.preventDefault() })
 
@@ -34,6 +35,7 @@ export function initialHtmlStyle () {
       lastTouchEnd = now;
     }, false);
 
+    // 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
     // 禁止双指放大
     document.documentElement.addEventListener('touchstart', function (event) {
       if (event.touches.length > 1) {
