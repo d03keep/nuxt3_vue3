@@ -1,6 +1,7 @@
 <template>
   <div>
-    {{time}}
+    {{formatDate(1665970039752)}}
+    {{JSON.stringify(result)}}
     <DemoSearch></DemoSearch>
     <NuxtLink to="/parent/child1">jump to child1</NuxtLink>
     <br>
@@ -10,7 +11,14 @@
 </template>
 <script setup lang="ts">
   import { formatDate } from '~/utils/common'
-  const time = formatDate(new Date())
+  import { getAppConfig } from '~/request/apis/common'
+
+
+  const result = await getAppConfig()
+
+  if(process.client) {
+    console.log('result====>', result)
+  }
 </script>
 
 <style scoped>

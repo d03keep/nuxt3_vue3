@@ -13,8 +13,18 @@ console.log('VERSION=', VERSION)
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-    buildModules: [
+    modules: [
+        // '@nuxtjs/axios',
         "@pinia/nuxt",
+    ],
+    // proxy: {
+    //     "/proxy": {
+    //         target: 'https://api.mliveplus.com',
+    //         pathRewrite: { "^/proxy": "" },
+    //     },
+    // },
+    buildModules: [
+
     ],
     head: {
         "htmlAttrs": {lang: 'zh-CN'},
@@ -38,10 +48,12 @@ export default defineNuxtConfig({
         // 'element-plus/theme-chalk/base.css',
         'element-plus/dist/index.css'
     ],
+    loading: { color: '#3B8070' },
     vite: {
         define: {
             __ENV__: `'${ENV}'`,
-            __VERSION__: `'${VERSION}'`
+            __VERSION__: `'${VERSION}'`,
+            __API_URL__: `'https://api.mliveplus.com'`,
         },
         plugins: [
             AutoImport({

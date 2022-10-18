@@ -2,20 +2,19 @@
  * 判断浏览器是否支持webp格式图片
  */
 export const checkWebp = (): boolean => {
-    try {
+    if (process.client) {
         return document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') === 0
-    } catch (err) {
-        return false
     }
 }
 
 /**
  * URL参数 转对象
  */
-export const getUrlParameters = (url = window.location.href) => {
+export const getUrlParameters = (url = '') => {
     const arr = url.match(/([^?=&]+)(=([^&]*))/g) || []
     return arr.reduce((a:any, v) => ((a[v.slice(0, v.indexOf('='))] = v.slice(v.indexOf('=') + 1)), a), {})
 }
+
 /**
  * 对象转URL参数
  */
@@ -131,7 +130,6 @@ export function formatCurrency(num: any) {
  * size 保留小数点位数
  * */
 export function fixedNumber(n:number, size:number = 2):number {
-    // if (isNaN(n) || isNaN(size)) throw Error(`参数n:${n}，必须为数字!`)
     if (isNaN(n) || isNaN(size)) return 0
     const _n:string = n.toString()
     const arr:string[] = _n.split('.')
@@ -155,22 +153,24 @@ export function getUuid() {
  * @return {*}
  */
 export function copy(val: string): void {
-    const input = document.createElement('input');
-    input.value = val;
-    document.body.appendChild(input);
-    input.select();
-    document.execCommand('Copy');
-    document.body.removeChild(input);
+    if (process.client) {
+        const input = document.createElement('input');
+        input.value = val;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('Copy');
+        document.body.removeChild(input);
+    }
 }
 
 /**
  * @description: 判断设备类型
  */
-export function judgeClient() {
+export function judgeClient(userAgent:string) {
     let client = ''
-    if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {  //判断iPhone|iPad|iPod|iOS
+    if (/(iPhone|iPad|iPod|iOS)/i.test(userAgent)) {  //判断iPhone|iPad|iPod|iOS
         client = 'iOS'
-    } else if (/(Android)/i.test(navigator.userAgent)) {  //判断Android
+    } else if (/(Android)/i.test(userAgent)) {  //判断Android
         client = 'Android'
     } else {
         client = 'PC'
