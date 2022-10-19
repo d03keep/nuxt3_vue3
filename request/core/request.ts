@@ -50,8 +50,8 @@ type httpOptions = {
  * @auth < 0 不拦截接口的用户权限 0 弹框提示登录 1 强制跳转登录
  * */
 const defaultRequestOptions: requestOptions = {
-    // baseUrl: __ENV__ === 'dev' ? '/proxy' : __API_URL__,
-    baseUrl: __API_URL__,
+    baseUrl: __ENV__ === 'dev' ? '/proxy' : __API_URL__,
+    // baseUrl: __API_URL__,
     path: '',
     params: {},
     loading: false,
@@ -81,9 +81,7 @@ const request = async (requestOptions:requestOptions) => {
     const result: IResult = httpStore.get(httpCacheKey, cacheTime as number)
 
     // 如果缓存未过期 返回缓存数据
-    if (result.code === 1) {
-        return Promise.resolve(result.data)
-    }
+    if (result.code === 1) return Promise.resolve(result.data??{})
 
     // 基本配置
     const $axios = axios.create({
@@ -102,13 +100,13 @@ const request = async (requestOptions:requestOptions) => {
     // 添加请求拦截器
     $axios.interceptors.request.use(
         (config:AxiosRequestConfig) => handleBeforeRequest(config, requestOptions),
-        (error) => handleAfterRequest(requestOptions, error.response)
+        async (error) => await handleAfterRequest(requestOptions, error.response)
     );
 
     // 添加响应拦截器
     $axios.interceptors.response.use(
         async (response:AxiosResponse) => await handleAfterRequest(requestOptions, response),
-        (error) => handleAfterRequest(requestOptions, error.response)
+        async (error) => await handleAfterRequest(requestOptions, error.response)
     );
 
     return $axios.request({
@@ -120,8 +118,8 @@ const request = async (requestOptions:requestOptions) => {
             t: user.token,
             p: '1' // 1.pc 2.h5 3.admin
         },
-        params: requestOptions.method === 'POST' ? params : null,
-        data: requestOptions.method === 'GET' ? params : null,
+        params: requestOptions.method.toLocaleUpperCase() === 'POST' ? params : null,
+        data: requestOptions.method.toLocaleUpperCase() === 'GET' ? params : null,
     })
 }
 
@@ -141,9 +139,8 @@ async function handleBeforeRequest(config:AxiosRequestConfig, options: requestOp
 // 请求后
 function handleAfterRequest(options: requestOptions, response?: AxiosResponse) {
     const { path, params, cacheTime, alertError, loading } = options
-
     const status = response?.status || -1
-    const res = JSON.parse(response.data) ?? {}
+    const res = JSON.parse(response?.data ?? '{}')
 
     console.log('\n======API result start=====')
     console.log('接口:', path)
@@ -159,16 +156,16 @@ function handleAfterRequest(options: requestOptions, response?: AxiosResponse) {
     }
 
     if (status === 200) {
-        console.log('alertError', alertError)
+        console.log('handleAfterRequest===>', res)
         // 弹报错信息
-        if (res.code !== 0 && alertError) {
+        if (res.status !== 0 && alertError) {
             mitt.emit('toast', {msg: res.msg})
         }
 
         // 请求成功，并缓存
-        if (res.code === 0 && cacheTime > 0) {
+        if (res.status === 0 && cacheTime > 0) {
             const httpCacheKey: string = HttpCache.createKey(path as string, params)
-            httpStore.put(httpCacheKey, res)
+            httpStore.put(httpCacheKey, {cacheTime: Date.now(), path: httpCacheKey, data: res})
         }
 
         return Promise.resolve(res)

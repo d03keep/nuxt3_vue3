@@ -5,8 +5,8 @@ type Decorate<T extends Record<string, any>> = { [K in keyof T as K extends stri
 
 type InjectionType<A extends Plugin> = A extends Plugin<infer T> ? Decorate<T> : unknown
 
-type NuxtAppInjections = 
-  InjectionType<typeof import("../components.plugin").default> &
+type NuxtAppInjections =
+  InjectionType<typeof import("../components.plugins").default> &
   InjectionType<typeof import("../../node_modules/nuxt/dist/head/runtime/lib/vueuse-head.plugin").default> &
   InjectionType<typeof import("../../node_modules/nuxt/dist/head/runtime/plugin").default> &
   InjectionType<typeof import("../../node_modules/nuxt/dist/pages/runtime/router").default>

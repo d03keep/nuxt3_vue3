@@ -9,13 +9,14 @@
       <br>
       <NuxtLink to="/home">去首页</NuxtLink>
       <button> 点我试试 </button>
-      <el-button>再点我试试</el-button>
+      <el-button @click="getUserinfo">再点我试试</el-button>
     </div>
   </NuxtLayout>
 </template>
 
 <script setup lang="ts">
 import { ElButton } from 'element-plus'
+import { getUserinfo } from '~/request/apis/common'
 useHead({
   title: "前端博客-前端教程-记录web前端开发的个人技术博客",
   viewport: "width=device-width,initial-scale=1,maximum-scale=1 ",
@@ -25,6 +26,9 @@ useHead({
     { name: "keywords", content: "笔记，前端，VUE，NODEJS，typescript" },
   ],
 });
+
+const result = useAsyncData('userinfo', async () => await getUserinfo())
+
 </script>
 
 <style scoped>

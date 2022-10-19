@@ -17,12 +17,6 @@ export default defineNuxtConfig({
         // '@nuxtjs/axios',
         "@pinia/nuxt",
     ],
-    // proxy: {
-    //     "/proxy": {
-    //         target: 'https://api.mliveplus.com',
-    //         pathRewrite: { "^/proxy": "" },
-    //     },
-    // },
     buildModules: [
 
     ],
@@ -73,6 +67,19 @@ export default defineNuxtConfig({
                 resolvers: [ElementPlusResolver({ ssr: true })]
             }),
         ],
+        server: {
+            proxy: {
+                '/proxy': {
+                    // target: "https://test3_api.sun8tv.com",
+                    // target: "https://test2-api.sun8tv.com",
+                    // target: "https://test1-api.sun8tv.com",
+                    // target: "https://uat-api.sun8tv.com",
+                    target: "https://api.mliveplus.com",
+                    changeOrigin: true,
+                    rewrite: (path) => path.replace(/^\/proxy/, '')
+                },
+            }
+        },
     },
     build: {
         extractCSS: true,

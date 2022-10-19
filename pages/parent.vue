@@ -13,7 +13,6 @@
   import { formatDate } from '~/utils/common'
   import { getAppConfig } from '~/request/apis/common'
 
-
   const result = await getAppConfig()
 
   if(process.client) {

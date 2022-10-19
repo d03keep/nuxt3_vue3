@@ -10,23 +10,23 @@ interface IData {
 
 export interface IResult {
   code: number;
-  data: any;
+  data: IData | null;
 }
 
 class HttpCache {
   private readonly capacity: number;
-  private map: Map<string, IData>;
+  private store: Map<string, IData>;
 
   constructor (capacity: number = 100) {
     // 存储最大数量
     this.capacity = capacity
 
     // store
-    this.map = new Map()
+    this.store = new Map()
   }
 
-  get (key: string, time: number) {
-    const val = this.map.get(key)
+  get (key: string, time: number): IResult {
+    const val = this.store.get(key)
     // 未命中
     if (typeof val === 'undefined') {
       return { code: -1, data: null }
@@ -34,7 +34,7 @@ class HttpCache {
 
     // 缓存过期(缓存时长 大于当前 key 的指定缓存时长)
     if (Date.now() - val.cacheTime > time) {
-      this.map.delete(key)
+      this.store.delete(key)
       return { code: 0, data: null }
     }
 
@@ -42,17 +42,19 @@ class HttpCache {
   }
 
   put (key:string, value: any) {
-    if (this.map.has(key)) {
-      this.map.delete(key)
+    if (this.store.has(key)) {
+      this.store.delete(key)
     }
 
-    this.map.set(key, value)
-    const keys = this.map.keys()
-    while (this.map.size > this.capacity) { this.map.delete(keys.next().value) }
+    this.store.set(key, value)
+    const keys = this.store.keys()
+    while (this.store.size > this.capacity) {
+      this.store.delete(keys.next().value)
+    }
   }
 
   clear () {
-    this.map.clear()
+    this.store.clear()
   }
 
   static createKey (path:string, params: any) {

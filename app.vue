@@ -9,8 +9,10 @@
   import { useUserStore } from "~/store/useUserStore";
   import { checkWebp } from '~/utils/common'
   import { initialHtmlStyle } from '~/utils/initialHtmlStyle'
-
+  const appConfig = useAppConfig()
   const user = useUserStore()
+
+  // console.log('appConfig===', appConfig.theme)
 
   const showLoginDialog = ref<boolean>(false)
   const showGlobalLoading = ref<boolean>(false)
@@ -28,6 +30,7 @@
   onDeactivated(() => {
     mitt.off('toggle-login')
     mitt.off('loading')
+    mitt.off('toast')
   })
 
   useHead({
